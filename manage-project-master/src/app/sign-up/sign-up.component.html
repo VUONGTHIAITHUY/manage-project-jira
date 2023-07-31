@@ -1,0 +1,33 @@
+<div class="flex">
+  <div class="w-1/2 bg-image-signUp h-screen">
+    <img class="w-full h-full object-cover" src="assets/10_hinh-nen-gau-cute.jpg" alt="">
+  </div>
+  <div class="flex flex-col m-auto w-1/2 mx-8">
+    <div class="text-center font-bold text-2xl pb-8">Sign Up</div>
+    <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+      <mat-form-field class="w-full">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput>
+        <mat-error *ngIf="myError('name', 'required')">Name is required</mat-error>
+        <mat-error *ngIf="myError('name', 'pattern')">Name only contain alphabet</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+        <input type="password" formControlName="password" matInput>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Phone Number</mat-label>
+        <input formControlName="phoneNumber" matInput>
+      </mat-form-field>
+      <div class="flex justify-center">
+         <button type="submit"   class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">Sign Up</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

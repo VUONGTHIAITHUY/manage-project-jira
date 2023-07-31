@@ -1,0 +1,109 @@
+<div class="p-4">
+  <div class="title font-bold text-2xl py-4">
+    Project Management
+  </div>
+  <div class="flex gap-4 py-4">
+    <button (click)="createProject()" class="p-3 bg-primary text-white w-40 rounded text-center">Create Project</button>
+    <button class="p-3 bg-primary text-white w-40 rounded text-center">Clear filters</button>
+    <button class="p-3 bg-primary text-white w-40 rounded text-center">Clear filter and sorted</button>
+  </div>
+  <div>
+    <table mat-table [dataSource]="listProject" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let project"> {{project.id}} </td>
+      </ng-container>
+      <ng-container matColumnDef="projectName">
+        <th mat-header-cell *matHeaderCellDef> Project Name </th>
+        <td class="text-accent" mat-cell *matCellDef="let project"> {{project.projectName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="categoryName">
+        <th mat-header-cell *matHeaderCellDef> Category </th>
+        <td mat-cell *matCellDef="let project"> {{project.categoryName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="creator">
+        <th mat-header-cell *matHeaderCellDef> Creator </th>
+        <td mat-cell *matCellDef="let project"><span class="bg-sky-300 rounded-full text-white py-1 px-2">
+            {{project.creator.name}}
+          </span> </td>
+      </ng-container>
+      <ng-container matColumnDef="members">
+        <th mat-header-cell *matHeaderCellDef> Members </th>
+        <td mat-cell *matCellDef="let project">
+          <div class="flex gap-1 relative">
+            <div #menuTrigger="matMenuTrigger" (mouseover)="openMyMenu(menuTrigger)" [matMenuTriggerFor]="myMenu"
+              class="bg-sky-500 rounded-full text-white w-6 text-center uppercase member"
+              *ngFor="let member of project.members">
+              {{member.name|firstCharacter}}
+            </div>
+            <div (click)="addMember()" class="bg-sky-900 rounded-full text-white w-5 text-center">
+              +
+            </div>
+            <mat-menu id="menu"
+              class="shadow-lg shadow-blue-500/50 listMember bg-slate-50 p-2 rounded absolute -right-4 -bottom-4"
+              #myMenu="matMenu">
+              <div class="font-semibold py-1">
+                Members
+              </div>
+              <div mat-menu-item class="flex gap-2 " *ngFor="let member of project.members">
+                <span>{{member.userId}}</span>
+                <span><img class="w-6 h-6 rounded-full mx-auto" [src]="member.avatar" alt=""></span>
+                <span>{{member.name}}</span>
+                <span (click)="deleteUser(project.id,member.userId)">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                    class="w-6 h-6 bg-red-500 rounded-full mx-auto">
+                    <path fill-rule="evenodd"
+                      d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                      clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </div>
+            </mat-menu>
+
+          </div>
+
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let project">
+          <div class="flex gap-2">
+            <div (click)="editProject(project)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                class="w-6 h-6 text-gray p-1 hover:bg-gray-100 border rounded border-[#d1d1d1]">
+                <path
+                  d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                <path
+                  d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+              </svg>
+
+            </div>
+            <div (click)="onDialog(project.id)">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                class="w-6 h-6 text-gray p-1 hover:bg-gray-100 border rounded border-[#d1d1d1]">
+                <path fill-rule="evenodd"
+                  d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                  clip-rule="evenodd" />
+              </svg>
+
+            </div>
+          </div>
+
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
+<ng-template #myTemplate>
+  <div class="p-4">
+    Are you sure delete delete this project?
+  </div>
+  <div class="flex justify-end">
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+      <button (click)="deleteProject()" type="submit" mat-flat-button color="primary">Save</button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>

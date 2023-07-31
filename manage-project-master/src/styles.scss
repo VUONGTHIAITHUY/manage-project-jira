@@ -1,0 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// .bg-image-signUp {
+//   background-image: url(./assets/10_hinh-nen-gau-cute.jpg);
+// }
+button:disabled {
+  background-color: #516385;
+}
+.success {
+  background-color: #1DBF73;
+}
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: #1DBF73;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: #ff2121;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+  color: #000000 !important;
+}
+.mdc-list-item__primary-text {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  grid-gap: 2px !important;
+  width: 100% !important;
+  padding: 4px 0px;
+  span{
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    flex-direction: column-reverse !important;
+    flex-wrap: wrap-reverse !important;
+  }
+}
