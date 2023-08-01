@@ -3,7 +3,7 @@
     <img class="w-full h-full object-cover" src="assets/10_hinh-nen-gau-cute.jpg" alt="">
   </div>
   <div class="flex flex-col m-auto w-1/2 mx-8">
-    <div class="text-center font-bold text-2xl pb-8">Login</div>
+    <div class="text-center font-bold text-2xl pb-8">Sign in</div>
     <form [formGroup]="signInForm" (ngSubmit)="signIn()">
       <mat-form-field class="w-full">
         <mat-label>Email</mat-label>
@@ -14,10 +14,8 @@
         <input type="password" formControlName="password" matInput>
       </mat-form-field>
       <div class="flex justify-center">
-         <button type="submit"   class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">Login</button>
+         <button type="submit" [disabled]="signInForm.invalid"   class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">Login</button>
       </div>
-
     </form>
-
   </div>
 </div>

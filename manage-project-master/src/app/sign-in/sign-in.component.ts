@@ -40,7 +40,7 @@ export class SignInComponent implements OnInit {
     this._userService.signIn(val).subscribe((res) => {
       console.log(res);
       if (res?.statusCode === 200) {
-        this._router.navigate(['dashboard']);
+        this._router.navigate(['project']);
         localStorage.setItem('accessToken', res.content.accessToken ?? '');
         localStorage.setItem('user', JSON.stringify(res.content) ?? '');
       }

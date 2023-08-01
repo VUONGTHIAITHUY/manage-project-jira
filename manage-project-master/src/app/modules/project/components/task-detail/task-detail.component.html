@@ -1,0 +1,171 @@
+<div class="p-8" *ngIf="task">
+    <div class="pb-4">
+        <button routerLink="/project/{{projectId}}" class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">
+            < Back </button>
+    </div>
+    <div class="flex items-center gap-x-4 mb-4">
+        <span class="text-4xl font-bold">{{task.taskName}}</span>
+        <span class="p-2 bg-blue-200 rounded">{{task.taskTypeDetail?.taskType}}</span>
+    </div>
+    <div class="block lg:flex justify-start gap-x-6">
+        <div class="flex flex-col justify-start basis-2/3 gap-y-6">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                    Description (<small>Click out to save description</small>)
+                </label>
+                <editor [(ngModel)]="task.description" (onBlur)="updateDescription()"
+                    [init]="{  height: 250, selector: 'textarea', toolbar: 'undo redo | styleselect | bold italic | link image' }">
+                </editor>
+            </div>
+            <div class="flex flex-col gap-y-2">
+                <span class="font-bold text-sm" title="Press enter to add comment">Comment (<small>Enter to add
+                        comment</small>)</span>
+
+                <div class="flex flex-col gap-y-4">
+                    <textarea id="message" [(ngModel)]="comment" (keyup.enter)="onAddComment()" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg
+                    border border-gray-300 focus:ring-blue-500 focus:border-blue-500
+                        " placeholder="Add comment here..."></textarea>
+                    <ng-container *ngFor="let comment of task.lstComment">
+                        <div class="flex flex-col gap-y-2">
+                            <div class="flex gap-x-4">
+                                <div>
+                                    <img class="w-10 rounded-full" [src]="comment.avatar" [title]="comment.name"
+                                        [alt]="comment.avatar">
+                                </div>
+                                <div *ngIf="!comment.isEdit" class="bg-white rounded p-2 w-full">
+                                    {{comment.commentContent}}
+                                </div>
+                                <input *ngIf="comment.isEdit" [(ngModel)]="comment.commentContent"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                                    type="text">
+                            </div>
+                            <div class="flex items-center justify-end gap-x-4">
+                                <button *ngIf="!comment.isEdit" (click)="editComment(comment)"
+                                    class="bg-primary text-white py-2 px-4 rounded text-center"
+                                    type="submit">Edit</button>
+                                <button *ngIf="comment.isEdit" (click)="saveComment(comment)"
+                                    class="bg-primary text-white py-2 px-4 rounded text-center"
+                                    type="submit">Save</button>
+                                <button *ngIf="!comment.isEdit" (click)="deleteComment(comment.id)"
+                                    class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
+                                    type="submit">Delete</button>
+                                <button *ngIf="comment.isEdit" (click)="comment.isEdit = !comment.isEdit"
+                                    class="bg-slate-500 text-white py-2 px-4 rounded hover:bg-slate-600 transition duration-300"
+                                    type="submit">Cancel</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col basis-1/3 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Status</label>
+                <mat-form-field class="w-full">
+                    <mat-label>Select status</mat-label>
+                    <mat-select [(ngModel)]="task.statusId" (valueChange)="onChangeStatus($event)">
+                        <ng-container *ngFor="let status of statusList">
+                            <mat-option [value]="status.statusId">{{status.statusName}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="flex flex-col">
+                <div class="flex items-center gap-x-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Assigness</label>
+                    <button type="button" [matMenuTriggerFor]="menu"
+                        class="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm mb-2 px-2">
+                        Add User assign
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <div class="p-4" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                            <div class="font-semibold py-1">
+                                Members
+                            </div>
+                            <div class="flex gap-2 ">
+                                <mat-form-field class="example-full-width w-full">
+                                    <mat-label>User assign</mat-label>
+                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                                        [formControl]="myControl" [matAutocomplete]="auto">
+                                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                        [displayWith]="displayFn">
+                                        <mat-option *ngFor="let user of userList" [value]="user">
+                                            {{user.name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="flex justify-end"><button (click)="assignUser()"
+                                    class="px-4 py-2 bg-primary text-white rounded text-center">Add User</button></div>
+                        </div>
+                    </mat-menu>
+                </div>
+                <div class="grid grid-cols-4 gap-2 items-center">
+                    <ng-container *ngFor="let assign of task.assigness">
+                        <div class="basis-1/3 bg-gray-100 flex items-center gap-x-2 p-2 rounded">
+                            <img class="w-4 rounded-full" [src]="assign.avatar" alt="assign.avatar"
+                                [title]="assign.name">
+                            <span class="w-12 text-ellipsis overflow-hidden whitespace-pre">{{assign.name}}</span>
+                            <mat-icon (click)="deleteUserAssign(assign)" fontIcon="delete"></mat-icon>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Priority</label>
+                <div class="flex items-center gap-x-2">
+                    <mat-form-field class="w-full">
+                        <mat-label>Select Priority</mat-label>
+                        <mat-select [(ngModel)]="task.priorityId" (valueChange)="onChangePriority($event)">
+                            <ng-container *ngFor="let priority of priorityList">
+                                <mat-option [value]="priority.priorityId">{{priority.priority}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <div class="flex gap-x-2">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">
+                        Original estimate (Hours)
+                    </label>
+                    <small>(Click out to save original estimate)</small>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <mat-form-field class="w-full">
+                        <mat-label [title]="'Click out to update original estimate'">Estimate hours</mat-label>
+                        <input type="number" [(ngModel)]="task.originalEstimate"
+                            (blur)="onChangeEstimate(task.originalEstimate)" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <div class="flex gap-x-2">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">
+                        Time Tracking
+                    </label>
+                    <small>(Click out to save time spent and time remaining)</small>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <mat-progress-bar mode="determinate" [value]="persentageTimeSpent"></mat-progress-bar>
+                    <div class="flex justify-between">
+                        <span>{{task.timeTrackingSpent}} logged</span>
+                        <span>{{task.timeTrackingRemaining}} remaining</span>
+                    </div>
+                    <div class="flex justify-between gap-x-4">
+                        <mat-form-field class="w-full">
+                            <mat-label [title]="'Click out to update original estimate'">Time Spent</mat-label>
+                            <input type="number" [(ngModel)]="task.timeTrackingSpent" (blur)="updateTimeTracking()"
+                                matInput>
+                        </mat-form-field>
+                        <mat-form-field class="w-full">
+                            <mat-label [title]="'Click out to update original estimate'">Time Remaining</mat-label>
+                            <input type="number" [(ngModel)]="task.timeTrackingRemaining" (blur)="updateTimeTracking()"
+                                matInput>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,11 +9,6 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: 'dashboard',
-        loadChildren: () => import('../../modules/dashboard/dashboard.module').then(m => m.DashboardModule),
-        canActivate: [AuthGuard]
-      },
-      {
         path: 'project',
         loadChildren: () => import('../../modules/project/project.module').then(m => m.ProjectModule),
         canActivate: [AuthGuard]
@@ -23,13 +18,9 @@ const routes: Routes = [
         loadChildren: () => import('../../modules/user/user.module').then(m => m.UserModule),
         canActivate: [AuthGuard]
       },
-      {
-        path: 'task',
-        loadChildren: () => import('../../modules/task/task.module').then(m => m.TaskModule),
-        canActivate: [AuthGuard]
-      }
     ]
-  }
+  },
+
 ];
 
 @NgModule({

@@ -24,7 +24,7 @@
         <input formControlName="phoneNumber" matInput>
       </mat-form-field>
       <div class="flex justify-center">
-         <button type="submit"   class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">Sign Up</button>
+         <button type="submit" [disabled]="signUpForm.invalid"  class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">Sign Up</button>
       </div>
 
     </form>

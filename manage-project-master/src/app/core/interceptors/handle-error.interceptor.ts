@@ -30,7 +30,7 @@ export class HandleErrorInterceptor implements HttpInterceptor {
             this._router.navigate(['login']);
           }
 
-          this._snackBar.open(`${err?.error.message}`, 'Lỗi', {
+          this._snackBar.open(err?.error?.message ?? "Something wrong. Please try agian latter !", 'ERROR', {
             duration: 3000,
             verticalPosition: 'top',
             panelClass: 'error-snackbar'

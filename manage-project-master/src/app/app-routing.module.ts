@@ -4,6 +4,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'project', pathMatch: 'full' },
   {
     path: '',
     loadChildren: () => import('./modules/layout/layout.module').then(m => m.LayoutModule),
@@ -16,11 +17,6 @@ export const routes: Routes = [
     path: 'login',
     component: SignInComponent
   },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({

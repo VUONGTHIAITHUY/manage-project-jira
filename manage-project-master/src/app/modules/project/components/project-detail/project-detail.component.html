@@ -1,0 +1,77 @@
+<div class="p-8 flex flex-col justify-start gap-y-6">
+    <div class="pb-4">
+        <button routerLink="/project" class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">
+            < Back </button>
+    </div>
+    <div class="flex justify-between">
+        <div class="text-2xl font-weight font-bold">
+            {{project.projectName}}
+        </div>
+        <button type="button" (click)="actionTask(null,'add')"
+            class="p-4 bg-primary text-white w-40 rounded  text-center">
+            Add Task
+        </button>
+    </div>
+    <div class="text-sm ">
+        {{project.projectCategory?.name}}
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
+        <ng-container *ngFor="let item of project.lstTask">
+            <div class="flex flex-col basis-1/4 gap-y-6 rounded bg-gray-100 shadow-xl p-2 min-h-[300px] ">
+                <div class="flex item-center justify-start uppercase font-bold">
+                    {{item.statusName }}
+                </div>
+                <ng-container *ngFor="let task of item.lstTaskDeTail">
+                    <div class="bg-white p-2 rounded shadow-xl border-neutral-100 hover:bg-neutral-200 transition duration-300 cursor-pointer"
+                        (click)="onClickTask(task)">
+                        <div class="flex justify-between">
+                            <div class="text-sm font-bold pb-3">
+                                {{task.taskName}}
+                            </div>
+                            <div class="flex gap-x-2">
+                                <div (click)="actionTask(task,'edit'); $event.stopPropagation()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="w-6 h-6 text-gray p-1 hover:bg-gray-100 border rounded border-[#d1d1d1]">
+                                        <path
+                                            d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                                        <path
+                                            d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                                    </svg>
+                                </div>
+                                <div (click)="onDialogDeleteTask(task.taskId);$event.stopPropagation()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="w-6 h-6 text-gray p-1 hover:bg-gray-100 border rounded border-[#d1d1d1]">
+                                        <path fill-rule="evenodd"
+                                            d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="p-1 bg-blue-100 rounded">{{task.priorityTask?.priority}}</span>
+                            <div class="flex itemx-center gap-x-2">
+                                <ng-container *ngFor="let user of task.assigness">
+                                    <img class="w-7 rounded-full bg-slate-400 flex item-center justify-center p-1"
+                                        [src]="user.avatar" [title]="user.name" [alt]="user.name">
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #myTemplate>
+    <div class="p-4">
+        Are you sure delete delete this task?
+    </div>
+    <div class="flex justify-end">
+        <mat-dialog-actions>
+            <button (click)="deleteTask()" type="submit" mat-flat-button color="primary" mat-dialog-close>Yes</button>
+            <button mat-button mat-dialog-close>No</button>
+        </mat-dialog-actions>
+    </div>
+</ng-template>

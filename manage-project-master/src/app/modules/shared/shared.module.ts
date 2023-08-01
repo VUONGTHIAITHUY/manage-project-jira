@@ -9,21 +9,23 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FirstCharacterPipe } from './first-character.pipe';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { FirstCharacterPipePipe } from './pipes/first-character-pipe.pipe';
+import { UserPopupComponent } from './components/user-popup/user-popup.component';
 
 const COMPONENTS = [
   SidebarComponent,
   NavComponent,
+  BreadcrumbComponent,
 ]
 
 @NgModule({
   declarations: [
     COMPONENTS,
+    UserPopupComponent,
   ],
   imports: [
     CommonModule,

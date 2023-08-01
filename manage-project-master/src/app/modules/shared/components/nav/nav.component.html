@@ -1,34 +1,13 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="onToggle()" matTooltip="Menu">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>ConcretePage.com</span>
-  <span class="toolbar-item-spacer"></span>
-  <button mat-icon-button matTooltip="Like">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button matTooltip="Share">
-    <mat-icon>share</mat-icon>
-  </button>
-  <button mat-icon-button matTooltip="Notifications">
-    <mat-icon>notifications</mat-icon>
-  </button>
-  <button mat-icon-button matTooltip="My Account" [matMenuTriggerFor]="userAccountMenu">
-    <mat-icon>account_circle</mat-icon>
-  </button>
-  <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
-    <button mat-menu-item routerLink="#">
-      <mat-icon>person</mat-icon><span>My Account</span>
-    </button>
-    <button mat-menu-item routerLink="#">
-      <mat-icon>settings</mat-icon><span>Settings</span>
-    </button>
-    <button mat-menu-item routerLink="#">
-      <mat-icon>help</mat-icon><span>Help</span>
-    </button>
-    <mat-divider></mat-divider>
-    <button mat-menu-item routerLink="#">
-      <mat-icon>exit_to_app</mat-icon>Logout
-    </button>
-  </mat-menu>
-</mat-toolbar>
+<div class="navbar">
+  <mat-toolbar>
+    <div class="flex pl-0 sm:pl-12 pr-4 w-full justify-between">
+      <div class="">Project Management</div>
+      <div class="flex gap-4">
+        <div><img class="w-6 h-6 rounded-full" [src]="user.avatar" alt=""></div>
+        <div>{{user.name}}</div>
+        <div (click)="logOut()" class="ml-4">Log out</div>
+      </div>
+    </div>
+
+  </mat-toolbar>
+</div>

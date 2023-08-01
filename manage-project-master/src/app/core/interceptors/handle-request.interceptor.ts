@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
@@ -17,6 +17,7 @@ export class HandleRequestInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // lấy access tocken từ localstorage
+    this._authService.setIsLoading(true);
     const accessToken = this._authService.getToken();
     //set vào header
     request = request.clone({
@@ -27,6 +28,10 @@ export class HandleRequestInterceptor implements HttpInterceptor {
       },
     });
 
-    return next.handle(request);
+    return next.handle(request).pipe(
+      finalize(() => {
+        this._authService.setIsLoading(false);
+      })
+    );
   }
 }

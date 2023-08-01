@@ -1,9 +1,10 @@
-import { OnInit, Component, Inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ProjectService } from '../../project.service';
 import { Category, Project } from '../../models/project.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ProjectCategoryService } from 'src/app/modules/shared/services/project-category.service';
 
 @Component({
   selector: 'app-create-edit-project',
@@ -12,23 +13,24 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateEditProjectComponent implements OnInit {
 
+  title: string = 'Create Project';
   listProjectCategory: Category[] = [];
   formProject: FormGroup;
   isEdit: boolean = false;
-  title: string = 'Create Project';
   creator: number | undefined;
 
   constructor(
     private _projectService: ProjectService,
     private _fb: FormBuilder,
     private _snackBar: MatSnackBar,
+    private _projectCategoryService: ProjectCategoryService,
     public dialogRef: MatDialogRef<CreateEditProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Project
   ) {
 
     if (this.data?.id) {
       this.isEdit = true;
-      this.title = 'Edit Project'
+      this.title = 'Edit Project';
     }
 
     this.formProject = this._fb.group({
@@ -45,7 +47,7 @@ export class CreateEditProjectComponent implements OnInit {
   }
 
   getProjectCategory() {
-    this._projectService.getProjectCategory().subscribe((res) => {
+    this._projectCategoryService.getProjectCategory().subscribe((res) => {
       this.listProjectCategory = res.content;
     })
   }
@@ -60,7 +62,7 @@ export class CreateEditProjectComponent implements OnInit {
 
   onSave() {
     if (this.formProject.invalid) {
-      this._snackBar.open('Required: ', 'Please input correct value required', {
+      this._snackBar.open('Please input correct value required', 'Create Project', {
         verticalPosition: 'top',
         panelClass: 'error-snackbar',
         duration: 3000,

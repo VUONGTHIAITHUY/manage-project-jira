@@ -1,0 +1,119 @@
+<div class="p-4">
+    <div class="pb-4">
+        <button routerLink="/project/{{projectId}}" class="p-4 bg-primary text-white w-40 rounded mx-auto text-center">
+            < Back </button>
+    </div>
+    <div class="font-bold text-2xl py-4">{{title}}</div>
+    <form [formGroup]="taskForm">
+        <div class="flex flex-col gap-y-2">
+            <div class="w-full">
+                <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Project</label>
+                <mat-form-field class="w-full">
+                    <mat-label>Select project</mat-label>
+                    <mat-select formControlName="projectId">
+                        <ng-container *ngFor="let project of projectList">
+                            <mat-option [value]="project.id">{{project.projectName}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="w-full">
+                <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Task Name</label>
+                <mat-form-field class="w-full">
+                    <mat-label>Input task name</mat-label>
+                    <input matInput placeholder="Input task name" formControlName="taskName" required>
+                    <mat-error *ngIf="myError('taskName', 'required')">Name is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="w-full">
+                <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Status</label>
+                <mat-form-field class="w-full">
+                    <mat-label>Select status</mat-label>
+                    <mat-select formControlName="statusId">
+                        <ng-container *ngFor="let status of statusList">
+                            <mat-option [value]="status.statusId">{{status.statusName}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="block md:flex gap-x-2">
+                <div class="w-full md:basis-1/2">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Priority</label>
+                    <mat-form-field class="w-full">
+                        <mat-label>Select priority</mat-label>
+                        <mat-select formControlName="priorityId">
+                            <ng-container *ngFor="let priority of priorityList">
+                                <mat-option [value]="priority.priorityId">{{priority.priority}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Task Type</label>
+                    <mat-form-field class="w-full">
+                        <mat-label>Select task type</mat-label>
+                        <mat-select formControlName="typeId">
+                            <ng-container *ngFor="let taskType of taskTypeList">
+                                <mat-option [value]="taskType.id">{{taskType.taskType}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="block md:flex gap-x-2">
+                <div class="w-full md:basis-1/2">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Assigness</label>
+                    <mat-form-field class="w-full">
+                        <mat-label>Select user</mat-label>
+                        <mat-select formControlName="listUserAsign" multiple>
+                            <mat-option *ngFor="let user of userList" [value]="user.userId">
+                                {{ user.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Estimate hours</label>
+                    <mat-form-field class="w-full">
+                        <mat-label>Estimate hours</mat-label>
+                        <input type="number" formControlName="originalEstimate" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="w-full">
+                <label class="block text-gray-700 text-sm font-bold mb-2 uppercase">Task Type</label>
+                <div class="flex flex-col">
+                    <div class="flex flex-col gap-2">
+                        <mat-progress-bar mode="determinate" [value]="persentageTimeSpent"></mat-progress-bar>
+                        <div class="flex justify-between">
+                            <span>{{taskForm.get('timeTrackingSpent')?.value}} logged</span>
+                            <span>{{taskForm.get('timeTrackingRemaining')?.value}} remaining</span>
+                        </div>
+                        <div class="block md:flex justify-between gap-x-4">
+                            <mat-form-field class="w-full">
+                                <mat-label>Time Spent</mat-label>
+                                <input type="number" (keyup)="onChangeTime()" formControlName="timeTrackingSpent"
+                                    matInput>
+                            </mat-form-field>
+                            <mat-form-field class="w-full">
+                                <mat-label>Time
+                                    Remaining</mat-label>
+                                <input type="number" (keyup)="onChangeTime()" formControlName="timeTrackingRemaining"
+                                    matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <editor formControlName="description"
+                [init]="{ height:300, plugins: 'lists link image table code help wordcount' }">
+            </editor>
+        </div>
+    </form>
+    <div class="flex justify-end py-4">
+        <button (click)="onSave()" type="submit"
+            class="p-4 bg-primary text-white w-40 rounded  text-center">Save</button>
+    </div>
+</div>

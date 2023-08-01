@@ -1,0 +1,43 @@
+<div class="p-4">
+  <div class="font-bold text-2xl py-4">Edit User</div>
+  <form [formGroup]="formUser">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <mat-form-field class="w-72">
+          <mat-label>ID</mat-label>
+          <input formControlName="id" readonly matInput>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="w-72">
+          <mat-label>Email</mat-label>
+          <input formControlName="email" matInput placeholder="Email">
+          <mat-error *ngIf="myError('email', 'required')">Email is required</mat-error>
+          <mat-error *ngIf="myError('email', 'pattern')">Email is not in the correct format</mat-error>
+
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field class="w-72">
+          <mat-label>Name</mat-label>
+          <input formControlName="name" matInput placeholder="Name">
+          <mat-error *ngIf="myError('name', 'required')">Name is required</mat-error>
+
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="w-72">
+          <mat-label>Phone</mat-label>
+          <input formControlName="phoneNumber" matInput placeholder="Phone number">
+          <mat-error *ngIf="myError('phoneNumber', 'required')">Phone number is required</mat-error>
+
+        </mat-form-field>
+      </div>
+    </div>
+
+  </form>
+  <div class="flex justify-end py-4">
+    <button (click)="onSave()" type="submit" class="p-4 bg-primary text-white w-40 rounded  text-center">Save</button>
+  </div>
+</div>

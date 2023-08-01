@@ -12,8 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -32,6 +32,8 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     MatExpansionModule,
     MatTooltipModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class LayoutModule { }
